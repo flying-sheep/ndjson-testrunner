@@ -75,7 +75,7 @@ class JSONTestResult(unittest.TestResult):
 		elif issubclass(err[0], test.failureException):
 			self.write_result('failure', subtest, err)
 		else:
-			elf.write_result('error', subtest, err)
+			self.write_result('error', subtest, err)
 
 
 class JSONTestRunner:
