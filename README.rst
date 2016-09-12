@@ -12,5 +12,5 @@ A unittest_ ``TestRunner`` that outputs ndjson_. One JSON record per test result
 
 To be used for test result storage or interprocess communication.
 
-_unittest: https://docs.python.org/3/library/unittest.html
-_ndjson: http://ndjson.org
+.. _unittest: https://docs.python.org/3/library/unittest.html
+.. _ndjson: http://ndjson.org
