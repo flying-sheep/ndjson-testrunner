@@ -1,5 +1,5 @@
-ndjson TestRunner |pypi-badge|
-==============================
+ndjson TestRunner |pypi-badge| |travis-badge|
+=============================================
 
 A unittest_ ``TestRunner`` that outputs ndjson_. One JSON record per test result:
 
@@ -19,3 +19,7 @@ To be used for test result storage or interprocess communication.
 
 .. |pypi-badge| image:: https://img.shields.io/pypi/v/ndjson-testrunner.svg?style=flat-square
 	:target: https://pypi.python.org/pypi/ndjson-testrunner
+
+.. |travis-badge| image:: https://img.shields.io/travis/flying-sheep/ndjson-testrunner.svg?style=flat-square
+	:target: https://travis-ci.org/flying-sheep/ndjson-testrunner
+
