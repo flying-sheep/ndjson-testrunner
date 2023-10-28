@@ -22,4 +22,3 @@ To be used for test result storage or interprocess communication.
 
 .. |travis-badge| image:: https://img.shields.io/travis/flying-sheep/ndjson-testrunner.svg?style=flat-square
 	:target: https://travis-ci.com/flying-sheep/ndjson-testrunner
-

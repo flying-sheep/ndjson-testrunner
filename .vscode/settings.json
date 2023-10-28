@@ -1,0 +1,21 @@
+{
+  "[python][json][jsonc][yaml]": {
+    "editor.formatOnSave": true,
+  },
+  "[json][jsonc][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true,
+    },
+  },
+  "python.analysis.typeCheckingMode": "basic",
+  "python.testing.unittestEnabled": true,
+  "python.testing.unittestArgs": ["-vv", "-s", "tests"],
+  "python.terminal.activateEnvironment": false,
+  "coverage-gutters.showGutterCoverage": true,
+  "editor.wordBasedSuggestions": false,
+}
