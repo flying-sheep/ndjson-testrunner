@@ -94,6 +94,9 @@ class JSONTestResult(unittest.TestResult):
 WarningAction = Literal["default", "error", "ignore", "always", "module", "once"]
 
 
+kw_only: Any = {} if sys.version_info < (3, 10) else dict(kw_only=True)
+
+
 @dataclass
 class JSONTestRunner:
     """TODO"""
@@ -102,7 +105,7 @@ class JSONTestRunner:
     failfast: bool = False
     buffer: bool = False
     warnings: WarningAction | None = None
-    tb_locals: bool = field(default=False, kw_only=True)
+    tb_locals: bool = field(default=False, **kw_only)
 
     stream: TextIO = field(init=False)
 
