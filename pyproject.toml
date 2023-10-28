@@ -6,9 +6,7 @@ authors = [
     { name = "Philipp A.", email = "flying-sheep@web.de" },
 ]
 readme = "README.rst"
-urls.Homepage = "https://flying-sheep.github.io/ndjson-testrunner"
-urls.Source = "https://flying-sheep.github.io/ndjson-testrunner"
-keywords = ["unittest", "sqlalchemy"]
+urls.Source = "https://github.com/flying-sheep/ndjson-testrunner"
 classifiers = [
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries",
