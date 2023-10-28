@@ -1,7 +1,7 @@
 ndjson TestRunner |pypi-badge|
 ==============================
 
-A unittest_ ``TestRunner`` that outputs ndjson_. One JSON record per test result:
+Exports `JSONTestRunner`, a unittest_ ``TestRunner`` class that outputs ndjson_. One JSON record per test result:
 
 .. code-block:: javascript
 
@@ -14,8 +14,26 @@ A unittest_ ``TestRunner`` that outputs ndjson_. One JSON record per test result
 
 To be used for test result storage or interprocess communication.
 
+Usage
+-----
+
+Use it programmatically:
+
+>>> import unittest
+>>> from ndjson_testrunner import JSONTestRunner
+>>> unittest.main("test_module_name", testRunner=JSONTestRunner)
+
+or from the command line:
+
+.. code-block:: bash
+
+   python -m ndjson_testrunner test_module_name
+
+Check out e.g. how `IRKernel’s usage`_ looks.
+
 .. _unittest: https://docs.python.org/3/library/unittest.html
 .. _ndjson: http://ndjson.org
+.. _IRKernel’s usage: https://github.com/IRkernel/IRkernel/blob/master/tests/testthat/test_kernel.r
 
 .. |pypi-badge| image:: https://img.shields.io/pypi/v/ndjson-testrunner.svg?style=flat-square
 	:target: https://pypi.python.org/pypi/ndjson-testrunner
