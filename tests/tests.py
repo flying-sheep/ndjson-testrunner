@@ -126,7 +126,3 @@ def load_tests(
     loader: unittest.TestLoader, standard_tests: unittest.TestSuite, pattern: str | None
 ) -> unittest.TestSuite:
     return unittest.TestSuite(loader.loadTestsFromTestCase(TestRunner))
-
-
-if __name__ == "__main__":
-    unittest.main()
