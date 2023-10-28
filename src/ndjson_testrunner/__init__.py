@@ -6,10 +6,12 @@ import unittest
 import warnings
 from contextlib import contextmanager
 from dataclasses import InitVar, dataclass, field
-from typing import TYPE_CHECKING, Any, Literal, TextIO, TypedDict, cast
+from typing import TYPE_CHECKING, Any, Callable, Literal, TextIO, TypedDict
 
 if TYPE_CHECKING:
     from collections.abc import Generator
+
+    from _typeshed import OptExcInfo
 
 __all__ = ["JSONTestResult", "JSONTestRunner", "TestResultType", "TestResultDict"]
 
@@ -32,6 +34,8 @@ class JSONTestResult(unittest.TestResult):
         self.buffer = buffer
         self.tb_locals = tb_locals
 
+    _exc_info_to_string: Callable[[Any, unittest.TestCase], str]
+
     def test_run(self, test: unittest.TestSuite | unittest.TestCase) -> None:
         self.startTestRun()
         try:
@@ -39,12 +43,14 @@ class JSONTestResult(unittest.TestResult):
         finally:
             self.stopTestRun()
 
-    def result_to_dict(self, type_: TestResultType, test: unittest.TestCase, err: Any | None = None) -> TestResultDict:
+    def result_to_dict(
+        self, type_: TestResultType, test: unittest.TestCase, err_or_reason: OptExcInfo | str | None = None
+    ) -> TestResultDict:
         msg = None
-        if isinstance(err, tuple) and len(err) == 3:
-            msg = cast(str, self._exc_info_to_string(err, test))
-        elif err:
-            msg = str(err)
+        if isinstance(err_or_reason, tuple) and len(err_or_reason) == 3:
+            msg = self._exc_info_to_string(err_or_reason, test)
+        elif err_or_reason:
+            msg = str(err_or_reason)
 
         return TestResultDict(
             type=type_,
@@ -53,39 +59,41 @@ class JSONTestResult(unittest.TestResult):
             msg=msg,
         )
 
-    def write_result(self, typ_: TestResultType, test: unittest.TestCase, err: Any | None = None) -> None:
-        json.dump(self.result_to_dict(typ_, test, err), self.stream, separators=(",", ":"))
+    def write_result(
+        self, typ_: TestResultType, test: unittest.TestCase, err_or_reason: OptExcInfo | str | None = None
+    ) -> None:
+        json.dump(self.result_to_dict(typ_, test, err_or_reason), self.stream, separators=(",", ":"))
         self.stream.write("\n")
 
-    def addSuccess(self, test) -> None:
+    def addSuccess(self, test: unittest.TestCase) -> None:
         super().addSuccess(test)
         self.write_result("success", test)
 
-    def addExpectedFailure(self, test, err) -> None:
+    def addExpectedFailure(self, test: unittest.TestCase, err: OptExcInfo) -> None:
         super().addExpectedFailure(test, err)
         self.write_result("expected_failure", test, err)
 
-    def addFailure(self, test, err) -> None:
+    def addFailure(self, test: unittest.TestCase, err: OptExcInfo) -> None:
         super().addFailure(test, err)
         self.write_result("failure", test, err)
 
-    def addError(self, test, err) -> None:
+    def addError(self, test: unittest.TestCase, err: OptExcInfo) -> None:
         super().addError(test, err)
         self.write_result("error", test, err)
 
-    def addUnexpectedSuccess(self, test) -> None:
+    def addUnexpectedSuccess(self, test: unittest.TestCase) -> None:
         super().addUnexpectedSuccess(test)
         self.write_result("unexpected_success", test)
 
-    def addSkip(self, test, reason) -> None:
+    def addSkip(self, test: unittest.TestCase, reason: str) -> None:
         super().addSkip(test, reason)
         self.write_result("skip", test, reason)
 
-    def addSubTest(self, test, subtest, err) -> None:
+    def addSubTest(self, test: unittest.TestCase, subtest: unittest.TestCase, err: OptExcInfo | None) -> None:
         super().addSubTest(test, subtest, err)
         if err is None:
             self.write_result("success", subtest)
-        elif issubclass(err[0], test.failureException):
+        elif err[0] and issubclass(err[0], test.failureException):
             self.write_result("failure", subtest, err)
         else:
             self.write_result("error", subtest, err)
@@ -94,18 +102,19 @@ class JSONTestResult(unittest.TestResult):
 WarningAction = Literal["default", "error", "ignore", "always", "module", "once"]
 
 
-kw_only: Any = {} if sys.version_info < (3, 10) else dict(kw_only=True)
-
-
 @dataclass
 class JSONTestRunner:
     """TODO"""
 
-    _stream: InitVar[TextIO | None] = field(repr=False)
+    _stream: InitVar[TextIO | None] = field(default=None, repr=False)
     failfast: bool = False
     buffer: bool = False
     warnings: WarningAction | None = None
-    tb_locals: bool = field(default=False, **kw_only)
+
+    if sys.version_info < (3, 10):
+        tb_locals: bool = field(default=False)
+    else:
+        tb_locals: bool = field(default=False, kw_only=True)
 
     stream: TextIO = field(init=False)
 

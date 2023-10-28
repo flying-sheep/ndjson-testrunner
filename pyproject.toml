@@ -37,7 +37,8 @@ run = "python -m unittest discover -vv -s tests"
 
 [tool.mypy]
 python_version = "3.12"
-mypy_path = ["src", "tests"]
+mypy_path = ["$MYPY_CONFIG_FILE_DIR/src"]
+files = ["src", "tests"]
 strict = true
 explicit_package_bases = true
 no_implicit_optional = true

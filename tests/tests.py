@@ -4,9 +4,9 @@ import json
 import re
 import unittest
 from io import StringIO
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, cast, overload
 
-from src.ndjson_testrunner import JSONTestRunner, TestResultDict
+from ndjson_testrunner import JSONTestRunner, TestResultDict
 
 if TYPE_CHECKING:
     from typing import Literal, Never
@@ -57,10 +57,10 @@ class TestRunner(unittest.TestCase):
             return map(json.loads, v.strip().split("\n"))
         else:
             self.assertNotIn("\n", v.strip(), "expected 1 ndjson record")
-            return json.loads(v)
+            return cast(TestResultDict, json.loads(v))
 
     def check_test(
-        self, test: str | TestResultDict, typ: str, id_: str, desc: str | None, msg_re: str | re.Pattern | None
+        self, test: str | TestResultDict, typ: str, id_: str, desc: str | None, msg_re: str | re.Pattern[str] | None
     ) -> TestResultDict:
         result = self.run_test(test) if isinstance(test, str) else test
         self.assertSetEqual(set(result.keys()), {"type", "id", "desc", "msg"})
