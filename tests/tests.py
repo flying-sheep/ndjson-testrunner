@@ -42,12 +42,10 @@ class TestRunner(unittest.TestCase):
         self.runner = JSONTestRunner(self.capture)
 
     @overload
-    def run_test(self, name: str, subtests: Literal[False] = False) -> TestResultDict:
-        ...
+    def run_test(self, name: str, subtests: Literal[False] = False) -> TestResultDict: ...
 
     @overload
-    def run_test(self, name: str, subtests: Literal[True]) -> map[TestResultDict]:
-        ...
+    def run_test(self, name: str, subtests: Literal[True]) -> map[TestResultDict]: ...
 
     def run_test(self, name: str, subtests: bool = False) -> TestResultDict | map[TestResultDict]:
         self.runner.run(unittest.defaultTestLoader.loadTestsFromName(f"tests.TestsToBeTested.{name}"))
