@@ -141,9 +141,3 @@ class JSONTestRunner:
         with self.filter_warnings():
             result.test_run(test)
         return result
-
-
-if __name__ == "__main__":
-    module = sys.argv[1]
-    sys.argv[1:] = sys.argv[2:]
-    unittest.main(module, testRunner=JSONTestRunner)
