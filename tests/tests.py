@@ -55,7 +55,7 @@ class TestRunner(unittest.TestCase):
             return map(json.loads, v.strip().split("\n"))
         else:
             self.assertNotIn("\n", v.strip(), "expected 1 ndjson record")
-            return cast(TestResultDict, json.loads(v))
+            return cast("TestResultDict", json.loads(v))
 
     def check_test(
         self, test: str | TestResultDict, typ: str, id_: str, desc: str | None, msg_re: str | re.Pattern[str] | None
