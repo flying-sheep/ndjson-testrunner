@@ -24,8 +24,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "3.9", os: ubuntu-latest, python: "3.9" }
           - { name: "3.12", os: ubuntu-latest, python: "3.12" }
+          - { name: "3.15", os: ubuntu-latest, python: "3.15" }
 
     steps:
       - name: Clone repo
