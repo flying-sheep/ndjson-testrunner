@@ -1,3 +1,6 @@
 __pycache__/
 *cache/
 /dist/
+
+# prettier’s cache (pre-commit hook)
+node_modules/
